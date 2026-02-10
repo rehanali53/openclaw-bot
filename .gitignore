@@ -1,0 +1,46 @@
+# Environment variables (contains secrets)
+.env
+
+# Docker volumes directory (if created locally)
+workspace/
+config/
+
+# Firecrawl data directory
+.firecrawl/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Node modules (if installed locally)
+node_modules/
+
+# Python cache (if any)
+__pycache__/
+*.pyc
+*.pyo
+
+# Docker related
+.dockerignore
+
+# Backup files
+*.backup
+*.bak
+openclaw.json.backup

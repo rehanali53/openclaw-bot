@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # OpenClaw Gateway with MiniMax
+  openclaw-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openclaw-bot
+    ports:
+      - "18789:18789"
+    environment:
+      # Telegram
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+
+      # MiniMax Portal API
+      - MINIMAX_API_KEY=${MINIMAX_API_KEY}
+
+      # Research Settings
+      - NEWS_FETCH_INTERVAL=${NEWS_FETCH_INTERVAL:-6}
+      - RESEARCH_RESULTS_COUNT=${RESEARCH_RESULTS_COUNT:-5}
+
+      # Gateway
+      - GATEWAY_PORT=18789
+      - GATEWAY_HOST=0.0.0.0
+      - GATEWAY_MODE=local
+      - NODE_ENV=production
+
+    volumes:
+      # Named volumes persist data across container restarts
+      - openclaw-config:/root/.openclaw
+      - openclaw-workspace:/root/.openclaw/workspace
+
+    networks:
+      - bot-network
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:18789/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# Named volumes for data persistence
+volumes:
+  openclaw-config:
+    driver: local
+  openclaw-workspace:
+    driver: local
+
+networks:
+  bot-network:
+    driver: bridge
